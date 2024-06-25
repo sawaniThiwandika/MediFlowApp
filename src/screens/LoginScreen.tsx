@@ -43,7 +43,7 @@ import {
     );
    }
    const goToSignUp = (stack:any) => {
-    stack.navigate('SignUp');
+    stack.navigate('registration');
   };
   
   const LoginScreen = (props: any) =>{
