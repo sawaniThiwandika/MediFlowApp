@@ -15,7 +15,7 @@ import {
   Image,
 } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Colors,
   DebugInstructions,
@@ -58,7 +58,8 @@ const Section: React.FC<SectionProps> = ({ title, children }) => {
   );
 };
 
-const RegistrationScreen = () =>{
+const RegistrationScreen = (props: any) =>{
+    const stack=props.navigation;
    
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -71,7 +72,28 @@ const RegistrationScreen = () =>{
   const [nicImage, setNicImage] = useState<any>(null);
 
   const handleRegistration = () => {
-    // Implement your registration logic here
+   
+    const userData = {
+        firstName,
+        lastName,
+        nic,
+        contactAddress,
+        email,
+        password,
+        nicImage,
+      };
+  
+      // Save the userData to storage or context for later use (e.g., AsyncStorage, context API, etc.)
+      // Example using AsyncStorage:
+      saveUserDataToStorage(userData);
+  
+      // Navigate to login screen after registration
+      stack.navigate('Login');
+  
+      // Optionally, you can clear the form fields after registration
+      clearFormFields();
+
+
     console.log('First Name:', firstName);
     console.log('Last Name:', lastName);
     console.log('NIC:', nic);
@@ -81,7 +103,29 @@ const RegistrationScreen = () =>{
     console.log('NIC Image:', nicImage);
     // Add further logic such as API calls, validation, etc.
   };
-  const handleLogin = () => {
+  const saveUserDataToStorage = async (userData: { firstName: string; lastName: string; nic: string; contactAddress: string; email: string; password: string; nicImage: any; }) => {
+    // Example using AsyncStorage (make sure to import AsyncStorage from 'react-native')
+    try {
+      await AsyncStorage.setItem('userData', JSON.stringify(userData));
+      console.log('User data saved successfully:', userData);
+    } catch (error) {
+      console.error('Error saving user data:', error);
+    }
+  };
+
+  const clearFormFields = () => {
+    setFirstName('');
+    setLastName('');
+    setNic('');
+    setContactAddress('');
+    setEmail('');
+    setPassword('');
+    setNicImage(null);
+  };
+
+
+  const handleLogin = (stack: any) => {
+    stack.navigate('Login');
     // Implement your registration logic here
     
     console.log('Login');
@@ -184,11 +228,11 @@ const RegistrationScreen = () =>{
               )}
               <TouchableOpacity
                 style={styles.registerButton}
-                onPress={handleRegistration}>
+                onPress={() => handleRegistration()}>
                 <Text style={styles.registerButtonText}>Register</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+              <TouchableOpacity style={styles.loginButton} onPress={() => handleLogin(stack)}>
                 <Text style={styles.loginButtonText}>
                 Already have an account?{' '}
                <Text style={styles.loginSpanText}>Login here</Text>
@@ -315,3 +359,5 @@ const styles = StyleSheet.create({
 });
 
 export default RegistrationScreen;
+
+
