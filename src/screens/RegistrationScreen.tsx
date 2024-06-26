@@ -1,7 +1,4 @@
-
-
 import React, { useState } from 'react';
-
 import {
   SafeAreaView,
   ScrollView,
@@ -13,54 +10,16 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const LogoImage = require('../../assets/mediFlowLogo.jpg');
 
-type SectionProps = {
-  title: string;
-  children: React.ReactNode;
-};
-
-const Section: React.FC<SectionProps> = ({ title, children }) => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
-
-const RegistrationScreen = (props: any) =>{
-    const stack=props.navigation;
-   
+const RegistrationScreen = (props: any) => {
+  const stack = props.navigation;
   const isDarkMode = useColorScheme() === 'dark';
 
   const [firstName, setFirstName] = useState('');
@@ -71,45 +30,55 @@ const RegistrationScreen = (props: any) =>{
   const [password, setPassword] = useState('');
   const [nicImage, setNicImage] = useState<any>(null);
 
-  const handleRegistration = () => {
-   
+  const handleRegistration = async () => {
+    if (!firstName || !lastName || !nic || !contactAddress || !email || !password || !nicImage) {
+      Alert.alert('Error', 'Please fill in all fields and upload an NIC image.');
+      return;
+    }
+
     const userData = {
-        firstName,
-        lastName,
-        nic,
-        contactAddress,
-        email,
-        password,
-        nicImage,
-      };
-  
-      // Save the userData to storage or context for later use (e.g., AsyncStorage, context API, etc.)
-      // Example using AsyncStorage:
-      saveUserDataToStorage(userData);
-  
-      // Navigate to login screen after registration
-      stack.navigate('Login');
-  
-      // Optionally, you can clear the form fields after registration
-      clearFormFields();
+      firstName,
+      lastName,
+      nic,
+      contactAddress,
+      email,
+      password,
+      nicImage,
+    };
 
-
-    console.log('First Name:', firstName);
-    console.log('Last Name:', lastName);
-    console.log('NIC:', nic);
-    console.log('Contact Address:', contactAddress);
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('NIC Image:', nicImage);
-    // Add further logic such as API calls, validation, etc.
-  };
-  const saveUserDataToStorage = async (userData: { firstName: string; lastName: string; nic: string; contactAddress: string; email: string; password: string; nicImage: any; }) => {
-    // Example using AsyncStorage (make sure to import AsyncStorage from 'react-native')
     try {
-      await AsyncStorage.setItem('userData', JSON.stringify(userData));
-      console.log('User data saved successfully:', userData);
+      let users = await getUsersFromStorage();
+      if (!users) {
+        users = [];
+      }
+
+      users.push(userData);
+      await saveUsersToStorage(users);
+
+      stack.navigate('Login');
+      clearFormFields();
+    } catch (error) {
+      console.error('Error registering user:', error);
+      Alert.alert('Error', 'An error occurred during registration. Please try again.');
+    }
+  };
+
+  const getUsersFromStorage = async () => {
+    try {
+      const users = await AsyncStorage.getItem('users');
+      return users ? JSON.parse(users) : [];
+    } catch (error) {
+      console.error('Error fetching users from storage:', error);
+      return [];
+    }
+  };
+
+  const saveUsersToStorage = async (users: any[]) => {
+    try {
+      await AsyncStorage.setItem('users', JSON.stringify(users));
     } catch (error) {
       console.error('Error saving user data:', error);
+      Alert.alert('Error', 'An error occurred while saving user data. Please try again.');
     }
   };
 
@@ -123,14 +92,10 @@ const RegistrationScreen = (props: any) =>{
     setNicImage(null);
   };
 
-
-  const handleLogin = (stack: any) => {
+  const handleLogin = () => {
     stack.navigate('Login');
-    // Implement your registration logic here
-    
-    console.log('Login');
-    // Add further logic such as API calls, validation, etc.
   };
+
   const handleChooseNicImage = async () => {
     try {
       const result = await DocumentPicker.pick({
@@ -141,7 +106,7 @@ const RegistrationScreen = (props: any) =>{
       if (DocumentPicker.isCancel(err)) {
         console.log('User cancelled the picker');
       } else {
-        throw err;
+        console.error('Error picking document:', err);
       }
     }
   };
@@ -152,94 +117,67 @@ const RegistrationScreen = (props: any) =>{
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            padding: 24,
-            borderRadius: 10,
-            margin: 20,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.8,
-            shadowRadius: 2,
-            elevation: 5,
-      
-          }}>
-        <Image source={LogoImage} style={styles.logo} />
-        <Text style={styles.headerTopic}>Create an account</Text>
-            <View style={styles.sectionContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder="First Name"
-                value={firstName}
-                onChangeText={setFirstName}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Last Name"
-                value={lastName}
-                onChangeText={setLastName}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="NIC"
-                value={nic}
-                onChangeText={setNic}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Contact Address"
-                value={contactAddress}
-                onChangeText={setContactAddress}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Email"
-                keyboardType="email-address"
-                value={email}
-                onChangeText={setEmail}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Password"
-                secureTextEntry
-                value={password}
-                onChangeText={setPassword}
-              />
-              <TouchableOpacity
-                style={styles.fileButton}
-                onPress={handleChooseNicImage}>
-                <Text style={styles.fileButtonText}>
-                  {nicImage ? 'Change NIC Image' : 'Upload NIC Image'}
-                </Text>
-              </TouchableOpacity>
-              {nicImage && (
-                <Image
-                  source={{ uri: nicImage.uri }}
-                  style={styles.imagePreview}
-                />
-              )}
-              <TouchableOpacity
-                style={styles.registerButton}
-                onPress={() => handleRegistration()}>
-                <Text style={styles.registerButtonText}>Register</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.loginButton} onPress={() => handleLogin(stack)}>
-                <Text style={styles.loginButtonText}>
-                Already have an account?{' '}
-               <Text style={styles.loginSpanText}>Login here</Text>
-               </Text>
-              </TouchableOpacity>
-            </View>
-        
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} backgroundColor={backgroundStyle.backgroundColor} />
+      <ScrollView contentInsetAdjustmentBehavior="automatic" style={backgroundStyle}>
+        <View style={[styles.container, { backgroundColor: isDarkMode ? Colors.black : Colors.white }]}>
+          <Image source={LogoImage} style={styles.logo} />
+          <Text style={styles.headerTopic}>Create an account</Text>
+          <View style={styles.sectionContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="First Name"
+              value={firstName}
+              onChangeText={setFirstName}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Last Name"
+              value={lastName}
+              onChangeText={setLastName}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="NIC"
+              value={nic}
+              onChangeText={setNic}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Contact Address"
+              value={contactAddress}
+              onChangeText={setContactAddress}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              keyboardType="email-address"
+              value={email}
+              onChangeText={setEmail}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              secureTextEntry
+              value={password}
+              onChangeText={setPassword}
+            />
+            <TouchableOpacity style={styles.fileButton} onPress={handleChooseNicImage}>
+              <Text style={styles.fileButtonText}>
+                {nicImage ? 'Change NIC Image' : 'Upload NIC Image'}
+              </Text>
+            </TouchableOpacity>
+            {nicImage && (
+              <Image source={{ uri: nicImage.uri }} style={styles.imagePreview} />
+            )}
+            <TouchableOpacity style={styles.registerButton} onPress={handleRegistration}>
+              <Text style={styles.registerButtonText}>Register</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+              <Text style={styles.loginButtonText}>
+                Already have an account? <Text style={styles.loginSpanText}>Login here</Text>
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -247,15 +185,13 @@ const RegistrationScreen = (props: any) =>{
 };
 
 const styles = StyleSheet.create({
- headerTopic:{
- fontSize:25,
- textAlign:'center',
- marginTop:27,
- color:'#000',
- fontWeight:'bold',
-
-
- },
+  headerTopic: {
+    fontSize: 25,
+    textAlign: 'center',
+    marginTop: 27,
+    color: '#000',
+    fontWeight: 'bold',
+  },
   container: {
     flexGrow: 1,
     backgroundColor: '#fff',
@@ -266,8 +202,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 126,
     height: 81.3,
-    //resizeMode: 'center', // Adjust the resizeMode as needed
-    alignSelf:'center'
+    alignSelf: 'center',
   },
   formContainer: {
     width: '80%',
@@ -282,9 +217,6 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
   },
-
-
-
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
@@ -300,7 +232,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   input: {
-   width:'100%',
+    width: '100%',
     height: 48,
     borderColor: 'gray',
     borderWidth: 1,
@@ -332,7 +264,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
   },
-  
   imagePreview: {
     width: 100,
     height: 100,
@@ -348,16 +279,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   loginButtonText: {
-    marginTop:18,
+    marginTop: 18,
     color: 'black',
     fontSize: 15,
   },
   loginSpanText: {
-    marginTop:18,
-    color:'blue',
+    marginTop: 18,
+    color: 'blue',
   },
 });
 
 export default RegistrationScreen;
-
-

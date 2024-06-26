@@ -65,16 +65,13 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
 
     const checkCredentials = async (emailAddress: string, pwd: string) => {
         try {
-            const storedUserData = await AsyncStorage.getItem('userData');
+            const storedUsers = await AsyncStorage.getItem('users');
+            if (storedUsers) {
+                const users = JSON.parse(storedUsers);
+                console.log('Stored users:', users);
+                const user = users.find((user: any) => user.email === emailAddress && user.password === pwd);
 
-            if (storedUserData) {
-                const userData = JSON.parse(storedUserData);
-                console.log("User data email: " + userData.email);
-                console.log("User data password: " + userData.password);
-                console.log("Entered email: " + emailAddress);
-                console.log("Entered password: " + pwd);
-
-                if (userData.email === emailAddress && userData.password === pwd) {
+                if (user) {
                     console.log('Login successful');
                     navigation.navigate('SignUp');
                     // Navigate to the next screen or dashboard
