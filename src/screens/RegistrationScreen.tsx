@@ -220,6 +220,7 @@ const styles = StyleSheet.create({
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
+    width:'90%',
   },
   sectionTitle: {
     fontSize: 24,
@@ -239,6 +240,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 16,
     marginBottom: 16,
+
   },
   fileButton: {
     backgroundColor: '#2196F3',
