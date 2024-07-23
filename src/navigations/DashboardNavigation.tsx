@@ -4,7 +4,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Image, View } from 'react-native';
 import DashboardContent from '../screens/Dashboard'; // Extracted content of DashboardScreen
 import HomeScreen from '../screens/Dashboard'; // Replace with the actual Home component
-import SettingsScreen from '../screens/RegistrationScreen'; // Replace with the actual Settings component
+import SheduleScreen from '../screens/SheduleScreen'; // Replace with the actual Settings component
+import DoctorScreen from '../screens/DoctorScreen';
+import DoctorDetailsScreen from '../screens/DoctorDetailsScreen';
+import ReportScreen from '../screens/ReportScreen';
+import OrderScreen from '../screens/OrderScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -48,10 +52,13 @@ const DashboardTabNavigator = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Shedule" component={SettingsScreen} />
-      <Tab.Screen name="Doctor" component={SettingsScreen} />
-      <Tab.Screen name="Report" component={DashboardContent}  />
-      <Tab.Screen name="Order" component={SettingsScreen} />
+      <Tab.Screen name="Shedule" component={SheduleScreen} />
+      <Tab.Screen name="Doctor" component={DoctorScreen} />
+      <Tab.Screen name="Report" component={ReportScreen}  />
+      <Tab.Screen name="Order" component={OrderScreen} />
+      
+     
+
     </Tab.Navigator>
   );
 };

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TextInput, GestureResponderEvent } from 'react-native';
 import { RootStackParamList } from './types/types'; // Update the path as needed
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Calendar } from 'react-native-calendars';
+import { NavigationProp } from '@react-navigation/native';
 
 const imagePathLogo = require('../../assets/mediFlowLogo.jpg');
 const imagePathMenu = require('../../assets/ham.jpg');
@@ -10,17 +11,32 @@ const imagePathMessage = require('../../assets/message.jpg');
 const imagePathBell = require('../../assets/notification.jpg');
 const imagePathUser = require('../../assets/acc.jpg');
 const doctorM = require('../../assets/doctorM.png');
-
+const hospital1 = require('../../assets/hospital1.jpg');
+const hospital2 = require('../../assets/hospital2.jpg');
+const hospital3 = require('../../assets/hospital3.jpg');
+const hospital4 = require('../../assets/hospital4.jpg');
+const map = require('../../assets/map.jpg');
 type DashboardScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'Dash'>; // Specify the route name
+  navigation: StackNavigationProp<RootStackParamList, 'Dash'>;
 };
 
+
+
+  
 const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible);
   };
+
+
+  const [task, setTask] = useState('');
+    const handleAddTask = () => {
+      console.log('Task added:', task);
+      setTask(''); // Clear input after adding
+    };
+  
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }}>
@@ -102,6 +118,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) => {
           }}
         />
       </View>
+
       <View style={styles.recentDoctorContainer}>
           <Text style={styles.recentDoctorTitle}>Recent Doctor</Text>
           <View style={styles.recentDoctorImageContainer}>
@@ -111,6 +128,47 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) => {
             <Text style={styles.recentDoctorButtonText}>View Details</Text>
           </TouchableOpacity>
         </View>
+
+ <View style={styles.hospitalContainer}>
+          <Text style={styles.hospitalTitle}>Hospitals</Text>
+          <View style={styles.hospitalImages}>
+            <Image source={hospital1} style={styles.hospitalImage} />
+            <Image source={hospital2} style={styles.hospitalImage} />
+            <Image source={hospital3} style={styles.hospitalImage} />
+            <Image source={hospital4} style={styles.hospitalImage} />
+          </View>
+          <View style={styles.radioButtonsContainer}>
+            <TouchableOpacity style={styles.radioButton} />
+            <TouchableOpacity style={styles.radioButton} />
+            <TouchableOpacity style={styles.radioButton} />
+            <TouchableOpacity style={styles.radioButton} />
+          </View>
+        </View>
+
+        <View style={styles.mapContainer}>
+          <Image source={map} style={styles.mapImg} />
+        </View>
+
+        <View style={styles.todoContainer}>
+          <Text style={styles.todoTitle}>To Do List</Text>
+          <Text style={styles.showAll}>Show all</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter task"
+            value={task}
+            onChangeText={setTask}
+          />
+          <TouchableOpacity style={styles.addButton} onPress={handleAddTask}>
+            <Text style={styles.addButtonText}>Add</Text>
+          </TouchableOpacity>
+          <View style={styles.radioButtonsContainer}>
+            <TouchableOpacity style={styles.radioButton} />
+            <Text style={styles.radioButtonText}>Short task goes there</Text>
+          </View>
+        </View>
+
+
+
     </ScrollView>
   );
 };
@@ -282,6 +340,104 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 16,
   },
+  hospitalContainer: {
+    width: '90%',
+    marginTop: 20,
+    backgroundColor: '#ffffff',
+    padding: 20,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
+    alignSelf:'center',
+  },
+  hospitalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333333',
+    marginBottom: 10,
+  },
+  hospitalImages: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  hospitalImage: {
+    width: '23%',
+    height: 80,
+    borderRadius: 10,
+  },
+  radioButtonsContainer: {
+    flexDirection: 'row',
+    marginTop: 10,
+    alignSelf:'center',
+  },
+  radioButton: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#007bff',
+    marginHorizontal: 5,
+  },
+  mapContainer: {
+    width: '90%',
+    marginTop: 20,
+    alignSelf:'center',
+  },
+  mapImg: {
+    width: '100%',
+    height: 200,
+    borderRadius: 10,
+  },
+  todoContainer: {
+    width: '90%',
+    marginTop: 20,
+    backgroundColor: '#ffffff',
+    padding: 20,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
+    alignSelf:'center',
+    marginBottom:20
+  },
+  todoTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333333',
+    marginBottom: 10,
+  },
+  showAll: {
+    fontSize: 14,
+    color: '#007bff',
+    marginBottom: 10,
+  },
+  input: {
+    height: 40,
+    borderColor: '#cccccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+  addButton: {
+    backgroundColor: '#007bff',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  addButtonText: {
+    color: '#ffffff',
+    fontSize: 16,
+  },
+  radioButtonText: {
+    marginLeft: 10,
+    fontSize: 16,
+    color: '#333333',
+  },
+ 
 });
 
 export default DashboardScreen;
