@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Linking, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
@@ -28,12 +28,15 @@ const LoginPageScreen: React.FC<LoginProps> = ({ navigation }) => {
 
         if (user) {
           console.log('Login successful');
-          navigation.navigate('Home');
+          
+          navigation.navigate('Dashboard');
         } else {
           console.log('Invalid credentials');
+          Alert.alert('UserName or Password is incorrect. Try Again');
         }
       } else {
         console.log('No user data found');
+        Alert.alert('Please enter UserName & Password');
       }
     } catch (error) {
       console.error('Error checking credentials:', error);
@@ -78,9 +81,16 @@ const LoginPageScreen: React.FC<LoginProps> = ({ navigation }) => {
 
       <Text style={styles.title}>
         <Text style={styles.titlefgt}>
-          <Text style={{ color: '#070530' }}>facebook     </Text>
+        <TouchableOpacity onPress={() => Linking.openURL('https://www.facebook.com/profile.php?id=61551104534617&mibextid=ZbWKwL')}>
+        <Text style={{ color: '#070530' }} >facebook     </Text>
+          
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => Linking.openURL('https://www.google.com/')}>
           <Text style={{ color: '#800303' }}>google       </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => Linking.openURL('https://www.facebook.com/profile.php?id=61551104534617&mibextid=ZbWKwL')}>
           <Text style={{ color: '#32dde3' }}>twitter</Text>
+          </TouchableOpacity>
         </Text>
       </Text>
 

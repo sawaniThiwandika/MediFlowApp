@@ -8,6 +8,9 @@ import RegistrationScreen from '../screens/RegistrationScreen';
 import IntroScreen from '../screens/IntroScreen';
 import LoginPageScreen from '../screens/LoginPageScreen';
 import RegistrationPageScreen from '../screens/RegistrationPageScreen';
+import DashboardScreen from '../navigations/DashboardNavigation';
+
+
 
 const Stack = createStackNavigator();
 
@@ -23,6 +26,7 @@ export const AppNavigation = () => {
         <Stack.Screen name="Login" component={LoginPageScreen} />
         <Stack.Screen name="Home" component={SignupScreen} />
         <Stack.Screen name="Registration" component={RegistrationPageScreen} />
+        <Stack.Screen name="Dashboard" component={DashboardScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

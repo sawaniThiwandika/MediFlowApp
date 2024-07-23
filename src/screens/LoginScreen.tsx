@@ -73,7 +73,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
 
                 if (user) {
                     console.log('Login successful');
-                    navigation.navigate('SignUp');
+                    navigation.navigate('Dashboard');
                     // Navigate to the next screen or dashboard
                     // navigation.navigate('Dashboard'); // Example of navigation
                 } else {
