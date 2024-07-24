@@ -9,6 +9,7 @@ import DoctorScreen from '../screens/DoctorScreen';
 import DoctorDetailsScreen from '../screens/DoctorDetailsScreen';
 import ReportScreen from '../screens/ReportScreen';
 import OrderScreen from '../screens/OrderScreen';
+import MyhealthScreen from '../screens/MyhealthScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,7 +30,7 @@ const DashboardTabNavigator = () => {
             iconSource = require('../../assets/home.jpg'); // Replace with your image path
           } else if (route.name === 'Shedule') {
             iconSource = require('../../assets/timeTable.jpg'); // Replace with your image path
-          } else if (route.name === 'Doctor') {
+          } else if (route.name === 'MyHealth') {
             iconSource = require('../../assets/doctor.jpg'); // Replace with your image path
           } else if (route.name === 'Report') {
             iconSource = require('../../assets/report.jpg'); // Replace with your image path
@@ -53,7 +54,7 @@ const DashboardTabNavigator = () => {
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Shedule" component={SheduleScreen} />
-      <Tab.Screen name="Doctor" component={DoctorScreen} />
+      <Tab.Screen name="MyHealth" component={MyhealthScreen} />
       <Tab.Screen name="Report" component={ReportScreen}  />
       <Tab.Screen name="Order" component={OrderScreen} />
       

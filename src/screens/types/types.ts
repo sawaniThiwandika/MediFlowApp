@@ -15,10 +15,13 @@ export type RootStackParamList = {
   Profile:undefined;
   BirthReport:undefined;
   DownloadBirthReport:undefined;
-
   ClinicReport:undefined;
   DownloadClinicReport:undefined;
   DoctorDetails: undefined;  // Add this line
   NurseDetails: undefined;  // Add this line
+  //Appointment:undefined;
+  day:undefined;
+
+  Appointment: { selectedDate: string };
   
 };

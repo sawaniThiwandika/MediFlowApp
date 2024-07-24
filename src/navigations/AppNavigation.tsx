@@ -16,6 +16,7 @@ import DownloadBirthReportScreen from '../screens/BirthCetificateDownloadScreen'
 import ClinicReportScreen from '../screens/ClinicReportScreen';
 import DownloadClinicReportScreen from '../screens/DownloadClinicReportScreen';
 import profile from '../screens/profileScreen';
+import Appointment from '../screens/ChannelDetails';
 const Stack = createStackNavigator()
 
 export const AppNavigation = () => {
@@ -38,7 +39,7 @@ export const AppNavigation = () => {
         <Stack.Screen name="ClinicReport" component={ClinicReportScreen}/>
         <Stack.Screen name="DownloadClinicReport" component={DownloadClinicReportScreen}/>
         <Stack.Screen name="Profile" component={profile}/>
-       
+        <Stack.Screen name="Appointment" component={Appointment}/>
        
       </Stack.Navigator>
     </NavigationContainer>

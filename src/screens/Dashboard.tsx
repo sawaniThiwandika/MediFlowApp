@@ -6,8 +6,8 @@ import { Calendar } from 'react-native-calendars';
 import { NavigationProp } from '@react-navigation/native';
 
 const imagePathLogo = require('../../assets/mediFlowLogo.jpg');
-const imagePathMenu = require('../../assets/ham.jpg');
-const imagePathMessage = require('../../assets/message.jpg');
+const imagePathMenu = require('../../assets/menuBar.png');
+const imagePathMessage = require('../../assets/message.png');
 const imagePathBell = require('../../assets/notification.jpg');
 const imagePathUser = require('../../assets/acc.jpg');
 const doctorM = require('../../assets/doctorM.png');
@@ -40,14 +40,21 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }}>
-      <View style={styles.rectangle}>
+     <View style={styles.header}>
         <Image source={imagePathLogo} style={styles.logo} />
-        <TouchableOpacity onPress={toggleSidebar}>
-          <Image source={imagePathMenu} style={styles.menu} />
-        </TouchableOpacity>
-        <Image source={imagePathMessage} style={styles.msg} />
-        <Image source={imagePathBell} style={styles.bell} />
-        <Image source={imagePathUser} style={styles.user} />
+        <Text style={styles.logoText}>MediFlow</Text>
+
+        <View style={styles.iconContainer}>
+          <View style={styles.iconBackground}>
+            <Image source={imagePathMessage} style={styles.iconHeader} />
+          </View>
+          <View style={styles.iconBackground}>
+            <Image source={imagePathBell} style={styles.iconHeader} />
+          </View>
+          <TouchableOpacity style={styles.iconBackground } onPress={() => navigation.navigate('Profile')}>
+            <Image source={imagePathUser} style={styles.iconHeader} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.container}>
@@ -174,55 +181,53 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  logo: {
+  header: {
     position: 'absolute',
-    top: 10,
-    left: 10,
+    top: 0,
+    width: '100%',
+    height: 70,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    zIndex: 1, // Ensure header is on top of other content
+  },
+  logo: {
     width: 40,
     height: 40,
   },
-  menu: {
-    position:'absolute',
-    top: -15,
-    left: 90,
-    width: 30,
-    height: 30,
+  logoText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    marginLeft: -40, // Reduced gap between logo and text
   },
-  msg: {
-    position: 'absolute',
-    top: 20,
-    left: 170,
-    width: 20,
-    height: 20,
-  },
-  bell: {
-    position: 'absolute',
-    top: 20,
-    left: 240,
-    width: 20,
-    height: 20,
-  },
-  user: {
-    position: 'absolute',
-    top: 20,
-    left: 300,
-    width: 20,
-    height: 20,
-  },
-  rectangle: {
-    width: '100%',
-    height: 70,
-    backgroundColor: '#b7ebe4',
+  iconContainer: {
+    
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 0,
+  },
+  iconBackground: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 5,
+    elevation: 3, // Add shadow for elevation effect
+  },
+  iconHeader: {
+    width: 24,
+    height: 24,
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f4f4f4',
-    marginTop: 70, // Adjust to ensure content is not hidden under the top bar
+    marginTop: 90, // Adjust to ensure content is not hidden under the top bar
   },
   card: {
     width: '90%',
