@@ -42,7 +42,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) => {
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} style={{ flex: 1 }}>
      <View style={styles.header}>
         <Image source={imagePathLogo} style={styles.logo} />
-        <Text style={styles.logoText}>MediFlow</Text>
+       <Text style={styles.logoText}>MediFlow</Text>
 
         <View style={styles.iconContainer}>
           <View style={styles.iconBackground}>
@@ -59,22 +59,22 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) => {
 
       <View style={styles.container}>
         <View style={styles.card}>
-          <Image source={require('../../assets/blood.jpg')} style={styles.icon} />
+          <Image source={require('../../assets/blood-group.png')} style={styles.icon} />
           <Text style={styles.label}>Blood Group</Text>
           <Text style={styles.value}>O+</Text>
         </View>
         <View style={styles.card}>
-          <Image source={require('../../assets/height.jpg')} style={styles.icon} />
+          <Image source={require('../../assets/height.png')} style={styles.icon} />
           <Text style={styles.label}>Height</Text>
           <Text style={styles.value}>175 cm</Text>
         </View>
         <View style={styles.card}>
-          <Image source={require('../../assets/weight.jpg')} style={styles.icon} />
+          <Image source={require('../../assets/weighing-machine.png')} style={styles.icon} />
           <Text style={styles.label}>Weight</Text>
           <Text style={styles.value}>50 kg</Text>
         </View>
         <View style={styles.card}>
-          <Image source={require('../../assets/heart.jpg')} style={styles.icon} />
+          <Image source={require('../../assets/heart-rate.png')} style={styles.icon} />
           <Text style={styles.label}>Healthy Rate</Text>
           <Text style={styles.value}>80%</Text>
         </View>
